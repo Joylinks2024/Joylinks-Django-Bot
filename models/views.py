@@ -41,8 +41,8 @@ def NextTopSoreUserList(request):
                        .order_by('-total_score', '-create_time')[10:20]
         serializer = UserSerializer(snippets, many=True)
         ser_data = serializer.data
-        if len(ser_data) <= 9:
-            ser_data = []
+        # if len(ser_data) <= 9:
+        #     ser_data = []
         return Response(ser_data)
 
 

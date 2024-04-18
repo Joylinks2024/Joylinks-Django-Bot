@@ -1,31 +1,25 @@
 from rest_framework.serializers import ModelSerializer
-
 from .models import *
-
 
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = "__all__"
 
-
 class PermissionSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ['is_superadmin', 'is_admin']
-
 
 class UserBanSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ['is_ban']
 
-
 class UserActiveSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ['is_active']
-
 
 class PersonalDataSerializer(ModelSerializer):
     class Meta:
@@ -38,12 +32,10 @@ class UpdateFirstNameSerializer(ModelSerializer):
         model = User
         fields = ['first_name']
 
-
 class UpdateLastNameSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ['last_name']
-
 
 class UpdateRegionSerializer(ModelSerializer):
     class Meta:

@@ -30,7 +30,6 @@ def TopSoreUserList(request):
         ser_data = serializer.data
         if len(ser_data) <= 9:
             ser_data = []
-            return Response(ser_data, status=status.HTTP_404_NOT_FOUND)
         return Response(ser_data, status.HTTP_200_OK)
 
 
@@ -43,7 +42,6 @@ def NextTopSoreUserList(request):
         ser_data = serializer.data
         if len(ser_data) <= 9:
             ser_data = []
-            return Response(ser_data, status=status.HTTP_404_NOT_FOUND)
         return Response(ser_data)
 
 

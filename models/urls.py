@@ -1,5 +1,11 @@
 from django.urls import path, register_converter
-from .views import *
+
+from .views import UserList, TopSoreUserList, NextTopScoreUserList, UserDetail, ScoreDetail, PermissionDetail, \
+    UserBanDetail, UserActiveDetail, PersonalDataDetail, FirstNameDetail, LastNameDetail, RegionDetail, DistrictDetail, \
+    PhoneNumberDetail
+
+
+# from .views import *
 
 
 class TelegramIDConverter:
@@ -10,12 +16,14 @@ class TelegramIDConverter:
 
     def to_url(self, value):
         return str(value)
+
+
 register_converter(TelegramIDConverter, 'telegram_id')
 
 urlpatterns = [
     path('users/', UserList),
     path('top-users/', TopSoreUserList),
-    path('next-top-users/', NextTopSoreUserList),
+    path('next-top-users/', NextTopScoreUserList),
     path('users/<telegram_id:telegram_id>/', UserDetail),
     path('users/<telegram_id:telegram_id>/scores/', ScoreDetail),
     path('users/<telegram_id:telegram_id>/permissions/', PermissionDetail),

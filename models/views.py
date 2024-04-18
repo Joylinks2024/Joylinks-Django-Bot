@@ -34,7 +34,7 @@ def TopSoreUserList(request):
 
 
 @api_view(['GET'])
-def NextTopSoreUserList(request):
+def NextTopScoreUserList(request):
     if request.method == 'GET':
         snippets = User.objects.filter(is_active=True, total_score__gte=60) \
                        .order_by('-total_score', '-create_time')[10:20]

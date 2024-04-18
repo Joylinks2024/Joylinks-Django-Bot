@@ -1,4 +1,3 @@
-from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -37,8 +36,8 @@ def TopSoreUserList(request):
 def NextTopSoreUserList(request):
     if request.method == 'GET':
         snippets = User.objects.filter(is_active=True, total_score__gte=60).order_by('-total_score', '-create_time')[:20]
-        serializer = UserSerializer(snippets, many=True)[10:20]
-        ser_data = serializer.data
+        serializer = UserSerializer(snippets, many=True)
+        ser_data = serializer.data[10:20]
         if len(ser_data) <= 9:
             ser_data = []
         return Response(ser_data)

@@ -1,11 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-
-from .models import User
 from .serializers import *
+
 
 @api_view(['GET', 'POST'])
 def UserList(request):
@@ -32,6 +31,7 @@ def TopSoreUserList(request):
             ser_data = []
         return Response(ser_data)
 
+
 @api_view(['GET'])
 def NextTopSoreUserList(request):
     if request.method == 'GET':
@@ -41,6 +41,7 @@ def NextTopSoreUserList(request):
         if len(ser_data) <= 9:
             ser_data = []
         return Response(ser_data)
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def UserDetail(request, telegram_id):
@@ -60,6 +61,7 @@ def UserDetail(request, telegram_id):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['GET', 'POST'])
 def ScoreList(request):
     if request.method == 'GET':
@@ -73,6 +75,7 @@ def ScoreList(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def ScoreDetail(request, telegram_id):
@@ -91,6 +94,7 @@ def ScoreDetail(request, telegram_id):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET', 'PUT'])
 def PermissionDetail(request, telegram_id):
@@ -111,7 +115,6 @@ def PermissionDetail(request, telegram_id):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 @api_view(['GET', 'PUT'])
 def UserBanDetail(request, telegram_id):
     try:
@@ -129,7 +132,6 @@ def UserBanDetail(request, telegram_id):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 @api_view(['GET', 'PUT'])
@@ -189,8 +191,6 @@ def FirstNameDetail(request, telegram_id):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
 @api_view(['GET', 'PUT'])
 def LastNameDetail(request, telegram_id):
     try:
@@ -208,7 +208,6 @@ def LastNameDetail(request, telegram_id):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 @api_view(['GET', 'PUT'])

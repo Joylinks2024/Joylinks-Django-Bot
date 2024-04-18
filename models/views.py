@@ -23,13 +23,23 @@ def UserList(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def TopSoreUserList(request):
     if request.method == 'GET':
-        snippets = User.objects.filter(is_active=True, total_score__gte=60).order_by('-total_score', '-create_time')
+        snippets = User.objects.filter(is_active=True, total_score__gte=60).order_by('-total_score', '-create_time')[:10]
         serializer = UserSerializer(snippets, many=True)
         ser_data = serializer.data
-        if len(ser_data) < 10:
+        if len(ser_data) <= 9:
+            ser_data = []
+        return Response(ser_data)
+
+@api_view(['GET'])
+def NextTopSoreUserList(request):
+    if request.method == 'GET':
+        snippets = User.objects.filter(is_active=True, total_score__gte=60).order_by('-total_score', '-create_time')[:20]
+        serializer = UserSerializer(snippets, many=True)[:10-20]
+        ser_data = serializer.data
+        if len(ser_data) <= 9:
             ser_data = []
         return Response(ser_data)
 

@@ -15,6 +15,7 @@ register_converter(TelegramIDConverter, 'telegram_id')
 urlpatterns = [
     path('users/', UserList),
     path('top-users/', TopSoreUserList),
+    path('next-top-users/', NextTopSoreUserList),
     path('users/<telegram_id:telegram_id>/', UserDetail),
     path('users/<telegram_id:telegram_id>/scores/', ScoreDetail),
     path('users/<telegram_id:telegram_id>/permissions/', PermissionDetail),

@@ -29,7 +29,7 @@ def TopSoreUserList(request):
         snippets = User.objects.filter(is_active=True, total_score__gte=60).order_by('-total_score', '-create_time')
         serializer = UserSerializer(snippets, many=True)
         ser_data = serializer.data
-        if len(ser_data) < 2:
+        if len(ser_data) < 10:
             ser_data = []
         return Response(ser_data)
 

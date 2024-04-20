@@ -2,10 +2,18 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-
 from .models import User
 from .serializers import *
+
+
+
+@api_view(['GET'])
+def ExcelGrandUserList(request):
+    if request.method == 'GET':
+        snippets = User.objects.filter(is_active=True, total_score__gte=60)
+        serializer = ExcelGrandSerializers(snippets, many=True)
+        return Response(serializer.data)
+
 
 @api_view(['GET', 'POST'])
 def UserList(request):
@@ -21,17 +29,33 @@ def UserList(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def NoOlimpiadaUserList(request):
     if request.method == 'GET':
         snippets = User.objects.filter(is_active=True, olimpiada=False)
         serializer = UserSerializer(snippets, many=True)
         return Response(serializer.data)
 
+@api_view(['GET'])
+def ExcelOlimpiadaUserList(request):
+    if request.method == 'GET':
+        snippets = User.objects.filter(is_active=True, olimpiada=True)
+        serializer = ExcelSerializers(snippets, many=True)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+def ExcelNoOlimpiadaUserList(request):
+    if request.method == 'GET':
+        snippets = User.objects.filter(is_active=True, olimpiada=False)
+        serializer = ExcelSerializers(snippets, many=True)
+        return Response(serializer.data)
+
+
 @api_view(['GET', 'POST'])
 def OlimpiadaUserList(request):
     if request.method == 'GET':
-        snippets = User.objects.filter(is_active=True, olimpiada=False)
+        snippets = User.objects.filter(is_active=True, olimpiada=True)
         serializer = UserSerializer(snippets, many=True)
         return Response(serializer.data)
 

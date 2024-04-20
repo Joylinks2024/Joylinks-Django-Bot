@@ -65,3 +65,14 @@ class OlimpiadaSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ['olimpiada']
+
+class ExcelSerializers(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['telegram_id', 'is_active', 'first_name', 'last_name', 'tg_full_name', 'tg_username', 'region', 'district', 'phone_number', 'olimpiada', 'create_time']
+
+
+class ExcelGrandSerializers(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['telegram_id', 'is_active', 'first_name', 'last_name', 'tg_full_name', 'tg_username', 'region', 'district', 'phone_number', 'total_score', 'english_score', "math_score", "iq_score",  'create_time']

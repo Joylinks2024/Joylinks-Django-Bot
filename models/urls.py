@@ -14,6 +14,9 @@ register_converter(TelegramIDConverter, 'telegram_id')
 
 urlpatterns = [
     path('users/', UserList),
+    path('excel-olimpiada-users/', ExcelOlimpiadaUserList),
+    path('excel-no-olimpiada-users/', ExcelNoOlimpiadaUserList),
+    path('excel-grand-users/', ExcelGrandUserList),
     path('olimpiada-users/', OlimpiadaUserList),
     path('no-olimpiada-users/', NoOlimpiadaUserList),
     path('top-users/', TopSoreUserList),

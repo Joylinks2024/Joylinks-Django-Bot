@@ -1,10 +1,11 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .serializers import *
 
+from .models import User
+from .serializers import *
 
 @api_view(['GET', 'POST'])
 def UserList(request):
@@ -20,35 +21,44 @@ def UserList(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET', 'POST'])
+def NoOlimpiadaUserList(request):
+    if request.method == 'GET':
+        snippets = User.objects.filter(is_active=True, olimpiada=False)
+        serializer = UserSerializer(snippets, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET', 'POST'])
+def OlimpiadaUserList(request):
+    if request.method == 'GET':
+        snippets = User.objects.filter(is_active=True, olimpiada=False)
+        serializer = UserSerializer(snippets, many=True)
+        return Response(serializer.data)
 
 @api_view(['GET'])
 def TopSoreUserList(request):
     if request.method == 'GET':
-        snippets = User.objects.filter(is_active=True, total_score__gte=60) \
-                       .order_by('-total_score', '-create_time')[:10]
+        snippets = User.objects.filter(is_active=True, total_score__gte=60).order_by('-total_score', '-create_time')[:10]
         serializer = UserSerializer(snippets, many=True)
         ser_data = serializer.data
         if len(ser_data) <= 9:
             ser_data = []
-        return Response(ser_data, status.HTTP_200_OK)
-
+        return Response(ser_data)
 
 @api_view(['GET'])
-def NextTopScoreUserList(request):
+def NextTopSoreUserList(request):
     if request.method == 'GET':
-        snippets = User.objects.filter(is_active=True, total_score__gte=60) \
-                       .order_by('-total_score', '-create_time')[10:20]
+        snippets = User.objects.filter(is_active=True, total_score__gte=60).order_by('-total_score', '-create_time')[:20]
         serializer = UserSerializer(snippets, many=True)
-        ser_data = serializer.data
+        ser_data = serializer.data[10:20]
         if len(ser_data) <= 9:
             ser_data = []
-        return Response(ser_data, status=status.HTTP_200_OK)
-
+        return Response(ser_data)
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def UserDetail(request, telegram_id):
     try:
-        user = get_object_or_404(User, telegram_id=telegram_id)
+        user = get_object_or_404(User, telegram_id=telegram_id, is_active=True)
     except User.DoesNotExist:
         return Response(None, status=status.HTTP_404_NOT_FOUND)
 
@@ -63,11 +73,10 @@ def UserDetail(request, telegram_id):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 @api_view(['GET', 'POST'])
 def ScoreList(request):
     if request.method == 'GET':
-        snippets = User.objects.all()
+        snippets = User.objects.filter(is_active=True)
         serializer = ScoresSerializer(snippets, many=True)
         return Response(serializer.data)
 
@@ -78,11 +87,10 @@ def ScoreList(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 @api_view(['GET', 'PUT', 'DELETE'])
 def ScoreDetail(request, telegram_id):
     try:
-        user = get_object_or_404(User, telegram_id=telegram_id)
+        user = get_object_or_404(User, telegram_id=telegram_id, is_active=True)
     except User.DoesNotExist:
         return Response(None, status=status.HTTP_404_NOT_FOUND)
 
@@ -97,11 +105,10 @@ def ScoreDetail(request, telegram_id):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 @api_view(['GET', 'PUT'])
 def PermissionDetail(request, telegram_id):
     try:
-        user = get_object_or_404(User, telegram_id=telegram_id)
+        user = get_object_or_404(User, telegram_id=telegram_id, is_active=True)
     except User.DoesNotExist:
         return Response(None, status=status.HTTP_404_NOT_FOUND)
 
@@ -117,10 +124,11 @@ def PermissionDetail(request, telegram_id):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 @api_view(['GET', 'PUT'])
 def UserBanDetail(request, telegram_id):
     try:
-        user = get_object_or_404(User, telegram_id=telegram_id)
+        user = get_object_or_404(User, telegram_id=telegram_id, is_active=True)
     except User.DoesNotExist:
         return Response(None, status=status.HTTP_404_NOT_FOUND)
 
@@ -136,10 +144,11 @@ def UserBanDetail(request, telegram_id):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 @api_view(['GET', 'PUT'])
 def UserActiveDetail(request, telegram_id):
     try:
-        user = get_object_or_404(User, telegram_id=telegram_id)
+        user = get_object_or_404(User, telegram_id=telegram_id, is_active=True)
     except User.DoesNotExist:
         return Response(None, status=status.HTTP_404_NOT_FOUND)
 
@@ -158,7 +167,7 @@ def UserActiveDetail(request, telegram_id):
 @api_view(['GET', 'PUT'])
 def PersonalDataDetail(request, telegram_id):
     try:
-        user = get_object_or_404(User, telegram_id=telegram_id)
+        user = get_object_or_404(User, telegram_id=telegram_id, is_active=True)
     except User.DoesNotExist:
         return Response(None, status=status.HTTP_404_NOT_FOUND)
 
@@ -177,7 +186,7 @@ def PersonalDataDetail(request, telegram_id):
 @api_view(['GET', 'PUT'])
 def FirstNameDetail(request, telegram_id):
     try:
-        user = get_object_or_404(User, telegram_id=telegram_id)
+        user = get_object_or_404(User, telegram_id=telegram_id, is_active=True)
     except User.DoesNotExist:
         return Response(None, status=status.HTTP_404_NOT_FOUND)
 
@@ -193,10 +202,12 @@ def FirstNameDetail(request, telegram_id):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+
 @api_view(['GET', 'PUT'])
 def LastNameDetail(request, telegram_id):
     try:
-        user = get_object_or_404(User, telegram_id=telegram_id)
+        user = get_object_or_404(User, telegram_id=telegram_id, is_active=True)
     except User.DoesNotExist:
         return Response(None, status=status.HTTP_404_NOT_FOUND)
 
@@ -212,10 +223,11 @@ def LastNameDetail(request, telegram_id):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 @api_view(['GET', 'PUT'])
 def RegionDetail(request, telegram_id):
     try:
-        user = get_object_or_404(User, telegram_id=telegram_id)
+        user = get_object_or_404(User, telegram_id=telegram_id, is_active=True)
     except User.DoesNotExist:
         return Response(None, status=status.HTTP_404_NOT_FOUND)
 
@@ -234,7 +246,7 @@ def RegionDetail(request, telegram_id):
 @api_view(['GET', 'PUT'])
 def DistrictDetail(request, telegram_id):
     try:
-        user = get_object_or_404(User, telegram_id=telegram_id)
+        user = get_object_or_404(User, telegram_id=telegram_id, is_active=True)
     except User.DoesNotExist:
         return Response(None, status=status.HTTP_404_NOT_FOUND)
 
@@ -253,7 +265,7 @@ def DistrictDetail(request, telegram_id):
 @api_view(['GET', 'PUT'])
 def PhoneNumberDetail(request, telegram_id):
     try:
-        user = get_object_or_404(User, telegram_id=telegram_id)
+        user = get_object_or_404(User, telegram_id=telegram_id, is_active=True)
     except User.DoesNotExist:
         return Response(None, status=status.HTTP_404_NOT_FOUND)
 
@@ -263,6 +275,24 @@ def PhoneNumberDetail(request, telegram_id):
 
     elif request.method == 'PUT':
         serializer = UpdatePhoneNumberSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'PUT'])
+def OlimpiadaDetail(request, telegram_id):
+    try:
+        user = get_object_or_404(User, telegram_id=telegram_id, is_active=True)
+    except User.DoesNotExist:
+        return Response(None, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = OlimpiadaSerializer(user)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = OlimpiadaSerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

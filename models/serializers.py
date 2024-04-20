@@ -59,3 +59,9 @@ class ScoresSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ['math_score', 'iq_score', 'english_score', 'total_score']
+
+
+class OlimpiadaSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['olimpiada']

@@ -11,4 +11,4 @@ class JoyLinkUserAdmin(admin.ModelAdmin):
     ordering = ['-create_time']
     list_editable = ['is_ban', 'is_superadmin', 'is_admin']
     search_fields = ['telegram_id']
-    list_filter = ['total_score']
+    list_filter = ['total_score', 'olimpiada']

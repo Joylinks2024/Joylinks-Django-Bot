@@ -1,4 +1,5 @@
 from django.urls import path, register_converter
+
 from .views import *
 
 
@@ -10,10 +11,13 @@ class TelegramIDConverter:
 
     def to_url(self, value):
         return str(value)
+
+
 register_converter(TelegramIDConverter, 'telegram_id')
 
 urlpatterns = [
     path('users/', UserList),
+    path('count-users/', UserCountList),
     path('excel-olimpiada-users/', ExcelOlimpiadaUserList),
     path('excel-no-olimpiada-users/', ExcelNoOlimpiadaUserList),
     path('excel-grand-users/', ExcelGrandUserList),
